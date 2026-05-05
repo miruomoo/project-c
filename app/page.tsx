@@ -1,4 +1,5 @@
-import Link from "next/link";
+﻿import Link from "next/link";
+import LandingCarousel from "./components/landing-carousel";
 
 const valueProps = [
   {
@@ -18,8 +19,13 @@ const valueProps = [
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 bg-white">
+      {/* Carousel */}
+      <div className="pt-10">
+        <LandingCarousel />
+      </div>
+
       {/* Hero */}
-      <section className="flex flex-col items-center justify-center text-center px-6 py-32 md:py-44">
+      <section className="flex flex-col items-center justify-center text-center px-6 py-20">
         <p className="text-xs font-semibold uppercase tracking-widest text-[#a0a0a0] mb-6">
           Tenant-sourced. Landlord-proof.
         </p>
