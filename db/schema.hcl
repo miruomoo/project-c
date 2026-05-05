@@ -1678,6 +1678,71 @@ table "webauthn_credentials" {
     columns = [column.user_id]
   }
 }
+table "condo_metrics" {
+  schema  = schema.public
+  comment = "The user rated metrics of each building."
+  column "id" {
+    null    = false
+    type    = text
+    default = sql("gen_random_uuid()")
+  }
+  column "building_id" {
+    null = false
+    type = text
+  }
+  column "metric_type" {
+    null = false
+    type = enum.metrictype
+  }
+  column "metric_value" {
+    null = true
+    type = integer
+  }
+  column "comment" {
+    null = true
+    type = text
+  }
+  column "date_created" {
+    null    = false
+    type    = date
+    default = sql("CURRENT_DATE")
+  }
+  foreign_key "condo_building_id_fkey" {
+    columns     = [column.id]
+    ref_columns = [table.condos.column.id]
+    on_update   = CASCADE
+    on_delete   = CASCADE
+  }
+}
+table "condos" {
+  schema  = schema.public
+  comment = "Table contains the condo data object definition."
+  column "id" {
+    null    = false
+    type    = text
+    default = sql("gen_random_uuid()")
+  }
+  column "building_name" {
+    null = false
+    type = text
+  }
+  column "address" {
+    null    = false
+    type    = text
+    comment = "Address includes number and street"
+  }
+  column "city" {
+    null = false
+    type = text
+  }
+  column "description" {
+    null = true
+    type = text
+  }
+  primary_key {
+    columns = [column.id]
+  }
+}
 table "messages" {
   schema = schema.realtime
   column "topic" {
@@ -2263,6 +2328,10 @@ enum "oauth_client_type" {
   schema = schema.auth
   values = ["public", "confidential"]
 }
+enum "metrictype" {
+  schema = schema.public
+  values = ["AGE", "ELEVATOR_QUALITY", "UTILITIES_COST", "SOUNDPROOFING", "SAFETY", "NEIGHBOURHOOD", "CONCIERGE", "AMENITIES", "MAINTENANCE", "CLEANLINESS"]
+}
 enum "equality_op" {
   schema = schema.realtime
   values = ["eq", "neq", "lt", "lte", "gt", "gte", "in"]
@@ -2293,76 +2362,4 @@ schema "realtime" {
 schema "storage" {
 }
 schema "vault" {
-}
-
-table "condos" {
-  schema = schema.public
-  comment = "Table contains the condo data object definition."
-  column "id" {
-    null    = false
-    type    = text
-    default = sql("gen_random_uuid()")
-  }
-  column "building_name" {
-    null = false
-    type = text
-  }
-  column "address" {
-    null = false
-    type = text
-    comment = "Address includes number and street"
-  }
-  column "city" {
-    null = false
-    type = text
-  }
-  column "description" {
-    null = true
-    type = text
-  }
-  primary_key {
-    columns = [column.id]
-  }
-}
-
-table "condo_metrics" {
-  schema = schema.public
-  comment = "The user rated metrics of each building."
-  column "id" {
-    null = false
-    type    = text
-    default = sql("gen_random_uuid()")
-  }
-  column "building_id" {
-    null = false
-    type = text
-  }
-  column "metric_type" {
-    null = false
-    type = enum.metrictype
-  }
-  column "metric_value" {
-    null = true
-    type = integer
-  }
-  column "comment" {
-    null = true
-    type = text
-  }
-  column "date_created" {
-    null = false
-    type = date
-    default = sql("CURRENT_DATE")
-  }
-  foreign_key "condo_building_id_fkey" {
-    columns     = [column.id]
-    ref_columns = [table.condos.column.id]
-    on_update   = CASCADE
-    on_delete   = CASCADE
-  }
-}
-
-enum "metrictype" {
-  schema = schema.public
-  values = ["AGE", "ELEVATOR_QUALITY", "UTILITIES_COST", "SOUNDPROOFING", "SAFETY", "NEIGHBOURHOOD", "CONCIERGE", "AMENITIES", "MAINTENANCE", "CLEANLINESS"]
 }
