@@ -2325,13 +2325,17 @@ table "condos" {
   }
 }
 
-table "metrics" {
+table "condo_metrics" {
   schema = schema.public
   comment = "The user rated metrics of each building."
   column "id" {
     null = false
     type    = text
     default = sql("gen_random_uuid()")
+  }
+  column "building_id" {
+    null = false
+    type = text
   }
   column "metric_type" {
     null = false
@@ -2349,6 +2353,12 @@ table "metrics" {
     null = false
     type = date
     default = sql("CURRENT_DATE")
+  }
+  foreign_key "condo_building_id_fkey" {
+    columns     = [column.id]
+    ref_columns = [table.condos.column.id]
+    on_update   = CASCADE
+    on_delete   = CASCADE
   }
 }
 
