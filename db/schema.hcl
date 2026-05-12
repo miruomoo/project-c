@@ -1678,17 +1678,57 @@ table "webauthn_credentials" {
     columns = [column.user_id]
   }
 }
+table "condo_images" {
+  schema = schema.public
+  column "id" {
+    null    = false
+    type    = uuid
+    default = sql("gen_random_uuid()")
+  }
+  column "condo_id" {
+    null = true
+    type = uuid
+  }
+  column "storage_path" {
+    null = false
+    type = text
+  }
+  column "position" {
+    null    = true
+    type    = integer
+    default = 0
+  }
+  column "is_cover" {
+    null    = true
+    type    = boolean
+    default = false
+  }
+  column "created_at" {
+    null    = true
+    type    = timestamp
+    default = sql("now()")
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  foreign_key "condo_images_condo_id_fkey" {
+    columns     = [column.condo_id]
+    ref_columns = [table.condos.column.id]
+    on_update   = NO_ACTION
+    on_delete   = CASCADE
+  }
+}
 table "condo_metrics" {
   schema  = schema.public
   comment = "The user rated metrics of each building."
   column "id" {
     null    = false
-    type    = text
+    type    = uuid
     default = sql("gen_random_uuid()")
   }
   column "building_id" {
     null = false
-    type = text
+    type = uuid
   }
   column "metric_type" {
     null = false
@@ -1707,11 +1747,14 @@ table "condo_metrics" {
     type    = date
     default = sql("CURRENT_DATE")
   }
-  foreign_key "condo_building_id_fkey" {
-    columns     = [column.id]
+  primary_key {
+    columns = [column.id]
+  }
+  foreign_key "condo_metrics_building_id_fkey" {
+    columns     = [column.building_id]
     ref_columns = [table.condos.column.id]
-    on_update   = CASCADE
-    on_delete   = CASCADE
+    on_update   = NO_ACTION
+    on_delete   = NO_ACTION
   }
 }
 table "condos" {
@@ -1719,7 +1762,7 @@ table "condos" {
   comment = "Table contains the condo data object definition."
   column "id" {
     null    = false
-    type    = text
+    type    = uuid
     default = sql("gen_random_uuid()")
   }
   column "building_name" {
