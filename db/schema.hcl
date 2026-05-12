@@ -1678,14 +1678,14 @@ table "webauthn_credentials" {
     columns = [column.user_id]
   }
 }
-table "condo_images" {
+table "building_images" {
   schema = schema.public
   column "id" {
     null    = false
     type    = uuid
     default = sql("gen_random_uuid()")
   }
-  column "condo_id" {
+  column "building_id" {
     null = true
     type = uuid
   }
@@ -1711,14 +1711,14 @@ table "condo_images" {
   primary_key {
     columns = [column.id]
   }
-  foreign_key "condo_images_condo_id_fkey" {
-    columns     = [column.condo_id]
-    ref_columns = [table.condos.column.id]
+  foreign_key "building_images_building_id_fkey" {
+    columns     = [column.building_id]
+    ref_columns = [table.buildings.column.id]
     on_update   = NO_ACTION
     on_delete   = CASCADE
   }
 }
-table "condo_metrics" {
+table "building_metrics" {
   schema  = schema.public
   comment = "The user rated metrics of each building."
   column "id" {
@@ -1750,16 +1750,16 @@ table "condo_metrics" {
   primary_key {
     columns = [column.id]
   }
-  foreign_key "condo_metrics_building_id_fkey" {
+  foreign_key "building_metrics_building_id_fkey" {
     columns     = [column.building_id]
-    ref_columns = [table.condos.column.id]
+    ref_columns = [table.buildings.column.id]
     on_update   = NO_ACTION
     on_delete   = NO_ACTION
   }
 }
-table "condos" {
+table "buildings" {
   schema  = schema.public
-  comment = "Table contains the condo data object definition."
+  comment = "Table contains the building data object definition."
   column "id" {
     null    = false
     type    = uuid
