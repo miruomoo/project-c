@@ -1769,6 +1769,10 @@ table "buildings" {
     null = false
     type = text
   }
+  column "building_type" {
+    null = false
+    type = enum.buildingtype
+  }
   column "address" {
     null    = false
     type    = text
@@ -2370,6 +2374,10 @@ enum "oauth_response_type" {
 enum "oauth_client_type" {
   schema = schema.auth
   values = ["public", "confidential"]
+}
+enum "buildingtype" {
+  schema = schema.public
+  values = ["APARTMENT", "CONDO", "DETACHED", "TOWNHOUSE"]
 }
 enum "metrictype" {
   schema = schema.public
