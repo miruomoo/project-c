@@ -6,12 +6,21 @@ export default async function BuildingsPage() {
 
   const { data: buildings, error } = await supabase
     .from("buildings")
-    .select("id, building_name, building_type, address, city, description")
+    .select("id, building_name, building_type, address, city, description, building_images(storage_path, is_cover)")
     .order("building_name");
 
   if (error) {
     throw new Error(error.message);
   }
+
+  const buildingsWithCovers = buildings.map((building) => {
+    const coverPath =
+      building.building_images?.find((img) => img.is_cover)?.storage_path ?? null;
+    const cover_image_url = coverPath
+      ? supabase.storage.from("building_images").getPublicUrl(coverPath).data.publicUrl
+      : null;
+    return { ...building, cover_image_url };
+  });
 
   return (
     <div className="flex flex-col flex-1 bg-white">
@@ -23,11 +32,11 @@ export default async function BuildingsPage() {
           Rated by tenants. No landlord edits.
         </p>
 
-        {buildings.length === 0 ? (
+        {buildingsWithCovers.length === 0 ? (
           <p className="mt-10 text-[#a0a0a0] text-sm">No buildings listed yet.</p>
         ) : (
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {buildings.map((building) => (
+            {buildingsWithCovers.map((building) => (
               <BuildingCard key={building.id} building={building} />
             ))}
           </div>
