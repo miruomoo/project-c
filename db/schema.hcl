@@ -1769,10 +1769,6 @@ table "buildings" {
     null = false
     type = text
   }
-  column "building_type" {
-    null = false
-    type = enum.buildingtype
-  }
   column "address" {
     null    = false
     type    = text
@@ -1785,6 +1781,10 @@ table "buildings" {
   column "description" {
     null = true
     type = text
+  }
+  column "building_type" {
+    null = false
+    type = enum.buildingtype
   }
   primary_key {
     columns = [column.id]
@@ -2375,13 +2375,13 @@ enum "oauth_client_type" {
   schema = schema.auth
   values = ["public", "confidential"]
 }
-enum "buildingtype" {
-  schema = schema.public
-  values = ["APARTMENT", "CONDO", "DETACHED", "TOWNHOUSE"]
-}
 enum "metrictype" {
   schema = schema.public
   values = ["AGE", "ELEVATOR_QUALITY", "UTILITIES_COST", "SOUNDPROOFING", "SAFETY", "NEIGHBOURHOOD", "CONCIERGE", "AMENITIES", "MAINTENANCE", "CLEANLINESS"]
+}
+enum "buildingtype" {
+  schema = schema.public
+  values = ["APARTMENT", "CONDO", "DETACHED", "TOWNHOUSE"]
 }
 enum "equality_op" {
   schema = schema.realtime
