@@ -37,10 +37,10 @@ export default function Home() {
           spin. No guesswork.
         </p>
         <Link
-          href="/condos"
+          href="/buildings"
           className="mt-10 inline-block bg-[#0f0f0f] text-white text-sm font-medium px-7 py-3.5 rounded-full hover:bg-[#333] transition-colors"
         >
-          Browse condos
+          Browse buildings
         </Link>
       </section>
 

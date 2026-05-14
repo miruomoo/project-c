@@ -12,10 +12,10 @@ export default function Nav() {
         </Link>
         <nav className="flex items-center gap-6">
           <Link
-            href="/condos"
+            href="/buildings"
             className="text-[#6b6b6b] text-sm hover:text-[#0f0f0f] transition-colors"
           >
-            Condos
+            Buildings
           </Link>
         </nav>
       </div>
